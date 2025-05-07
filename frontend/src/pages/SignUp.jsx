@@ -102,7 +102,6 @@ export default function SignUp() {
               fullWidth
               name="password"
               label="Password"
-              type="number"
               id="password"
               autoComplete="new-password"
               sx={{ marginBottom: "10px" }}
@@ -117,13 +116,9 @@ export default function SignUp() {
               Sign Up
             </Button>
 
-            <Grid container justifyContent="flex-end">
-              <Grid item>
-                <NavLink to={"/"} variant="body2">
-                  Already have an account? Sign in
-                </NavLink>
-              </Grid>
-            </Grid>
+            <NavLink to={"/"} variant="body2">
+              Already have an account? Sign in
+            </NavLink>
           </Box>
         </Box>
       </Container>

@@ -4,7 +4,7 @@ import Logo from "../assets/logo_ecommerce.png";
 const Footer = () => {
   return (
     <div>
-      <div className="flex flex-col sm:grid grid-cols-[3fr_1fr_1fr] gap-14 py-10 px-3 mt-40 text-sm bg-black text-white">
+      <div className="flex flex-col sm:grid grid-cols-[3fr_1fr_1fr] gap-14 py-10 px-3 mt-40 text-sm bg-black text-white  ">
         <div>
           <img src={Logo} alt="" className="mb-5 w-32" />
           <p className="w-full md:w-2/3">

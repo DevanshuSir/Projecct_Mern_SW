@@ -6,7 +6,7 @@ const RegSchema = new Schema({
   FirstName: String,
   LastName: String,
   EmailAddress: String,
-  Password: Number,
+  Password: String,
 });
 
 module.exports = model("Regdata", RegSchema);
