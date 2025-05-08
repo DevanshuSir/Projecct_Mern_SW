@@ -13,9 +13,20 @@ const AdminProduct = () => {
       })
       .then((result) => {
         setProducts(result);
+      });
+  }, [products]);
+
+  function handleDelete(id) {
+    fetch(`/api/adminproductdelete/${id}`, {
+      method: "DELETE",
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((result) => {
         console.log(result);
       });
-  }, []);
+  }
 
   return (
     <div>
@@ -88,12 +99,20 @@ const AdminProduct = () => {
                       {item.ProductBestSeller ? "Yes" : "No"}
                     </td>
                     <td className="px-6 py-4 font-semibold text-gray-900 dark:text-white">
-                      <Button variant="contained" color="success">
-                        Update
-                      </Button>
+                      <Link to={`/adminproductupdate/${item._id}`}>
+                        <Button variant="contained" color="success">
+                          Update
+                        </Button>
+                      </Link>
                     </td>
                     <td className="px-6 py-4 font-semibold text-gray-900 dark:text-white">
-                      <Button variant="contained" color="error">
+                      <Button
+                        variant="contained"
+                        color="error"
+                        onClick={() => {
+                          handleDelete(item._id);
+                        }}
+                      >
                         Delete
                       </Button>
                     </td>

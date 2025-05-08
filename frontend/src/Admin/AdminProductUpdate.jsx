@@ -1,6 +1,5 @@
+import React, { useEffect, useState } from "react";
 import Left from "./Left";
-import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
-import Favorite from "@mui/icons-material/Favorite";
 import {
   Button,
   Checkbox,
@@ -12,12 +11,11 @@ import {
   OutlinedInput,
   TextField,
 } from "@mui/material";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
+import Favorite from "@mui/icons-material/Favorite";
+import { useParams } from "react-router-dom";
 
-const AddProductadmin = () => {
-  const navigate = useNavigate();
-
+const AdminProductUpdate = () => {
   const [productName, setProductName] = useState("");
   const [productDesc, setProductDesc] = useState("");
   const [productPrice, setProductPrice] = useState("");
@@ -29,47 +27,46 @@ const AddProductadmin = () => {
     let value = e.target.value;
     let checked = e.target.checked;
 
+    console.log(value);
+    console.log(checked);
+
     if (checked) {
-      setIssize([...isSize, value]);
+      setIssize([value]);
     } else {
-      setIssize(isSize.filter((item) => item !== value));
+      setIssize(isSize.filter((item) => item == value));
     }
   }
 
   function handleForm(e) {
     e.preventDefault();
-    const formData = {
-      Title: productName,
-      Desc: productDesc,
-      Price: productPrice,
-      Rating: productRating,
-      Size: isSize,
-      BestSeller: isBestseller,
-    };
+  }
 
-    fetch("/api/adminproductdata", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formData),
-    })
+  const { id } = useParams();
+
+  useEffect(() => {
+    fetch(`/api/adminsingleproductupdate/${id}`)
       .then((res) => {
         return res.json();
       })
       .then((result) => {
-        if (result.message === "Successfully Insert Product 😍") {
-          navigate("/adminproduct");
-        }
+        console.log(result);
+        setProductName(result.ProductName);
+        setProductDesc(result.ProductDescription);
+        setProductPrice(result.ProductPrice);
+        setProductRating(result.ProductRating);
+        setIssize(result.ProductSizes);
+        setIsbestseller(result.ProductBestSeller);
       });
-  }
+  }, [id]);
 
   return (
     <div>
-      <div className="flex flex-col items-center md:items-start md:flex-row justify-center gap-3 w-11/12 mt-5">
+      <div className="flex flex-col md:flex-row items-center justify-center gap-3 w-11/12 mt-5">
         <Left />
         {/* Right */}
         <div className="w-2/3">
           <h1 className=" text-center text-4xl font-bold text-sky-600 my-4">
-            Add Products ✔️
+            Update Product 💫
           </h1>
           <form onSubmit={handleForm}>
             <TextField
@@ -101,14 +98,14 @@ const AddProductadmin = () => {
               </InputLabel>
               <OutlinedInput
                 id="outlined-adornment-amount"
-                startAdornment={
-                  <InputAdornment position="start">₹</InputAdornment>
-                }
-                label="Amount"
                 value={productPrice}
                 onChange={(e) => {
                   setProductPrice(e.target.value);
                 }}
+                startAdornment={
+                  <InputAdornment position="start">₹</InputAdornment>
+                }
+                label="Amount"
               />
             </FormControl>
 
@@ -132,30 +129,35 @@ const AddProductadmin = () => {
                     control={<Checkbox />}
                     label="S"
                     value={"S"}
+                    checked={isSize[0] == "S" ? true : false}
                     onChange={handleChange}
                   />
                   <FormControlLabel
                     control={<Checkbox />}
                     label="M"
                     value={"M"}
+                    checked={isSize[1] == "M" ? true : false}
                     onChange={handleChange}
                   />
                   <FormControlLabel
                     control={<Checkbox />}
                     label="L"
                     value={"L"}
+                    checked={isSize[2] == "L" ? true : false}
                     onChange={handleChange}
                   />
                   <FormControlLabel
                     control={<Checkbox />}
                     label="XL"
                     value={"XL"}
+                    checked={isSize[3] == "XL" ? true : false}
                     onChange={handleChange}
                   />
                   <FormControlLabel
                     control={<Checkbox />}
                     label="XXL"
                     value={"XXL"}
+                    checked={isSize[4] == "XXL" ? true : false}
                     onChange={handleChange}
                   />
                 </FormGroup>
@@ -177,7 +179,7 @@ const AddProductadmin = () => {
             />
 
             <Button type="submit" variant="outlined" color="error">
-              Add Product
+              Update Product
             </Button>
           </form>
         </div>
@@ -186,4 +188,4 @@ const AddProductadmin = () => {
   );
 };
 
-export default AddProductadmin;
+export default AdminProductUpdate;

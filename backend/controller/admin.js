@@ -29,7 +29,29 @@ const adminAllProducts = async (req, res) => {
   }
 };
 
+const adminProductDelete = async (req, res) => {
+  try {
+    const id = req.params.abc;
+    await AdminProductCollection.findByIdAndDelete(id);
+    res.status(200).json({ message: "Successfully Delete 😉" });
+  } catch (error) {
+    res.status(500).json({ message: "Internal Server Error 🫤" });
+  }
+};
+
+const adminSingleProduct = async (req, res) => {
+  try {
+    const id = req.params.abc;
+    const record = await AdminProductCollection.findById(id);
+    res.status(200).json(record);
+  } catch (error) {
+    res.status(500).json({ message: "Internal Server Error 🫤" });
+  }
+};
+
 module.exports = {
   adminproducts,
   adminAllProducts,
+  adminProductDelete,
+  adminSingleProduct,
 };
