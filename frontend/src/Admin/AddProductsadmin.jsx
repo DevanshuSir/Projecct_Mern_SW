@@ -64,10 +64,10 @@ const AddProductadmin = () => {
 
   return (
     <div>
-      <div className="flex flex-col items-center md:items-start md:flex-row justify-center gap-3 w-11/12 mt-5">
+      <div className="flex flex-col items-center justify-center gap-3 w-auto mt-5">
         <Left />
         {/* Right */}
-        <div className="w-2/3">
+        <div className="w-11/12 ">
           <h1 className=" text-center text-4xl font-bold text-sky-600 my-4">
             Add Products ✔️
           </h1>

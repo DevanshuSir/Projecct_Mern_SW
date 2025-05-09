@@ -9,5 +9,7 @@ api.post("/adminproductdata", adminController.adminproducts);
 api.get("/adminallproducts", adminController.adminAllProducts);
 api.delete("/adminproductdelete/:abc", adminController.adminProductDelete);
 api.get("/adminsingleproductupdate/:abc", adminController.adminSingleProduct);
+api.put("/adminnewproductupdate/:abc", adminController.adminNewProductUpdate);
+api.get("/frotendproducts", userController.FrontendProducts);
 
 module.exports = api;

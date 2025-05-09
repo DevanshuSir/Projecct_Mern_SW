@@ -11,6 +11,7 @@ const AdminProductSchema = new Schema({
     type: [String],
     default: [],
   },
+  ProductStatus: { type: String, default: "Out-Of-Stock" },
   ProductBestSeller: Boolean,
 });
 

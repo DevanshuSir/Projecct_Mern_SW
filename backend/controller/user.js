@@ -1,4 +1,5 @@
 const RegCollection = require("../models/RegData");
+const AdminProductCollections = require("../models/AdminProduct");
 
 const homePage = (req, res) => {
   res.send("Hello Project Class");
@@ -45,8 +46,20 @@ const LoginData = async (req, res) => {
   }
 };
 
+const FrontendProducts = async (req, res) => {
+  try {
+    const record = await AdminProductCollections.find({
+      ProductStatus: "In-Stock",
+    });
+    res.status(200).json(record);
+  } catch (error) {
+    res.status(500).json({ message: "Internal Server Error 🫤" });
+  }
+};
+
 module.exports = {
   homePage,
   RegData,
   LoginData,
+  FrontendProducts,
 };

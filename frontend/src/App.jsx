@@ -10,6 +10,8 @@ import AdminProduct from "./Admin/AdminProduct";
 import AdminQuery from "./Admin/AdminQuery";
 import AddProductadmin from "./Admin/AddProductsadmin";
 import AdminProductUpdate from "./Admin/AdminProductUpdate";
+import Collection from "./pages/Collection";
+import SingleCollection from "./pages/SingleCollection";
 
 const App = () => {
   return (
@@ -20,6 +22,8 @@ const App = () => {
           <Route path="/" element={<SignIn />} />
           <Route path="/home" element={<HomePage />} />
           <Route path="/signup" element={<SignUp />} />
+          <Route path="/collection" element={<Collection />} />
+          <Route path="/singlecollection" element={<SingleCollection />} />
           <Route path="/admin" element={<Admin />} />
           <Route path="/adminproduct" element={<AdminProduct />} />
           <Route path="/adminquery" element={<AdminQuery />} />

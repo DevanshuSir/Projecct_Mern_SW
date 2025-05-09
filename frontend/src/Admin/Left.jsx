@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Button } from "@mui/material";
 const Left = () => {
   return (
-    <div className="w-1/3 flex flex-col gap-3">
+    <div className="w-11/12 flex flex-row gap-3">
       <Link to={"/adminproduct"}>
         <Button variant="contained" color="success" fullWidth>
           Product Management

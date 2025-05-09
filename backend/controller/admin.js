@@ -49,9 +49,31 @@ const adminSingleProduct = async (req, res) => {
   }
 };
 
+const adminNewProductUpdate = async (req, res) => {
+  try {
+    const { Title, Desc, Price, Rating, Size, BestSeller, PStatus } = req.body;
+    const id = req.params.abc;
+
+    await AdminProductCollection.findByIdAndUpdate(id, {
+      ProductName: Title,
+      ProductDescription: Desc,
+      ProductPrice: Price,
+      ProductRating: Rating,
+      ProductSizes: Size,
+      ProductBestSeller: BestSeller,
+      ProductStatus: PStatus,
+    });
+
+    res.status(200).json({ message: "Successfully Update ✔️" });
+  } catch (error) {
+    res.status(500).json({ message: "Internal Server Error 🫤" });
+  }
+};
+
 module.exports = {
   adminproducts,
   adminAllProducts,
   adminProductDelete,
   adminSingleProduct,
+  adminNewProductUpdate,
 };

@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
 import Favorite from "@mui/icons-material/Favorite";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const AdminProductUpdate = () => {
   const [productName, setProductName] = useState("");
@@ -22,26 +22,47 @@ const AdminProductUpdate = () => {
   const [productRating, setProductRating] = useState(0);
   const [isSize, setIssize] = useState([]);
   const [isBestseller, setIsbestseller] = useState(false);
+  const [status, setStatus] = useState("");
+  const { id } = useParams();
+  const navigate = useNavigate();
 
   function handleChange(e) {
     let value = e.target.value;
     let checked = e.target.checked;
 
-    console.log(value);
-    console.log(checked);
-
     if (checked) {
-      setIssize([value]);
+      setIssize([...isSize, value]);
     } else {
-      setIssize(isSize.filter((item) => item == value));
+      setIssize(isSize.filter((item) => item !== value));
     }
   }
 
   function handleForm(e) {
     e.preventDefault();
-  }
+    const formData = {
+      Title: productName,
+      Desc: productDesc,
+      Price: productPrice,
+      Rating: productRating,
+      Size: isSize,
+      BestSeller: isBestseller,
+      PStatus: status,
+    };
 
-  const { id } = useParams();
+    fetch(`/api/adminnewproductupdate/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData),
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((result) => {
+        if (result.message === "Successfully Update ✔️") {
+          navigate("/adminproduct");
+        }
+      });
+  }
 
   useEffect(() => {
     fetch(`/api/adminsingleproductupdate/${id}`)
@@ -61,10 +82,10 @@ const AdminProductUpdate = () => {
 
   return (
     <div>
-      <div className="flex flex-col md:flex-row items-center justify-center gap-3 w-11/12 mt-5">
+      <div className="flex flex-col items-center justify-center gap-3 w-auto mt-5">
         <Left />
         {/* Right */}
-        <div className="w-2/3">
+        <div className="w-11/12">
           <h1 className=" text-center text-4xl font-bold text-sky-600 my-4">
             Update Product 💫
           </h1>
@@ -120,6 +141,19 @@ const AdminProductUpdate = () => {
               }}
             />
 
+            <select
+              name=""
+              id=""
+              className="w-full border bottom-10 border-black rounded-sm p-2"
+              onChange={(e) => {
+                setStatus(e.target.value);
+              }}
+            >
+              <option value="">---Select---</option>
+              <option value="In-Stock">In-Stock</option>
+              <option value="Out-Of-Stock">Out-Of-Stock</option>
+            </select>
+
             {/* Size Options */}
             <div className="mb-4">
               <h3 className="font-semibold mb-2">Select Size:</h3>
@@ -129,35 +163,35 @@ const AdminProductUpdate = () => {
                     control={<Checkbox />}
                     label="S"
                     value={"S"}
-                    checked={isSize[0] == "S" ? true : false}
+                    checked={isSize.includes("S")}
                     onChange={handleChange}
                   />
                   <FormControlLabel
                     control={<Checkbox />}
                     label="M"
                     value={"M"}
-                    checked={isSize[1] == "M" ? true : false}
+                    checked={isSize.includes("M")}
                     onChange={handleChange}
                   />
                   <FormControlLabel
                     control={<Checkbox />}
                     label="L"
                     value={"L"}
-                    checked={isSize[2] == "L" ? true : false}
+                    checked={isSize.includes("L")}
                     onChange={handleChange}
                   />
                   <FormControlLabel
                     control={<Checkbox />}
                     label="XL"
                     value={"XL"}
-                    checked={isSize[3] == "XL" ? true : false}
+                    checked={isSize.includes("XL")}
                     onChange={handleChange}
                   />
                   <FormControlLabel
                     control={<Checkbox />}
                     label="XXL"
                     value={"XXL"}
-                    checked={isSize[4] == "XXL" ? true : false}
+                    checked={isSize.includes("XXL")}
                     onChange={handleChange}
                   />
                 </FormGroup>
