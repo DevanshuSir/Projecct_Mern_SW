@@ -12,6 +12,7 @@ import AddProductadmin from "./Admin/AddProductsadmin";
 import AdminProductUpdate from "./Admin/AdminProductUpdate";
 import Collection from "./pages/Collection";
 import SingleCollection from "./pages/SingleCollection";
+import AdminQueryReply from "./Admin/AdminQueryReply";
 
 const App = () => {
   return (
@@ -32,6 +33,7 @@ const App = () => {
             path="/adminproductupdate/:id"
             element={<AdminProductUpdate />}
           />
+          <Route path="/adminqueryreply/:id" element={<AdminQueryReply />} />
         </Routes>
         <Footer />
       </BrowserRouter>

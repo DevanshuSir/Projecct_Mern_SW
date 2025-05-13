@@ -1,4 +1,5 @@
 const AdminProductCollection = require("../models/AdminProduct");
+const QueryCollections = require("../models/Query");
 
 const adminproducts = async (req, res) => {
   try {
@@ -70,10 +71,31 @@ const adminNewProductUpdate = async (req, res) => {
   }
 };
 
+const QueryAdminData = async (req, res) => {
+  try {
+    const queryData = await QueryCollections.find();
+    res.status(200).json(queryData);
+  } catch (error) {
+    res.status(500).json({ message: "Internal Server Error 🫤" });
+  }
+};
+
+const queryDelete = async (req, res) => {
+  try {
+    const id = req.params.abc;
+    await QueryCollections.findByIdAndDelete(id);
+    res.status(200).json({ message: "Successfully Delete 👍" });
+  } catch (error) {
+    res.status(500).json({ message: "Internal Server Error 🫤" });
+  }
+};
+
 module.exports = {
   adminproducts,
   adminAllProducts,
   adminProductDelete,
   adminSingleProduct,
   adminNewProductUpdate,
+  QueryAdminData,
+  queryDelete,
 };

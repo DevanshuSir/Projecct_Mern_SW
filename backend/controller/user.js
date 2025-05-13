@@ -1,5 +1,6 @@
 const RegCollection = require("../models/RegData");
 const AdminProductCollections = require("../models/AdminProduct");
+const QueryCollections = require("../models/Query");
 
 const homePage = (req, res) => {
   res.send("Hello Project Class");
@@ -57,9 +58,25 @@ const FrontendProducts = async (req, res) => {
   }
 };
 
+const QueryData = async (req, res) => {
+  try {
+    const { userEmail, userQuery } = req.body;
+    const record = new QueryCollections({
+      QueryEmail: userEmail,
+      Query: userQuery,
+    });
+    await record.save();
+
+    res.status(200).json({ message: "Successfully Send Your Query 😉" });
+  } catch (error) {
+    res.status(500).json({ message: "Internal Server Error 🫤" });
+  }
+};
+
 module.exports = {
   homePage,
   RegData,
   LoginData,
   FrontendProducts,
+  QueryData,
 };
