@@ -3,17 +3,17 @@ const QueryCollections = require("../models/Query");
 
 const adminproducts = async (req, res) => {
   try {
+    const PImage = req.file.filename;
     const { Title, Desc, Price, Rating, Size, BestSeller } = req.body;
-
     const record = new AdminProductCollection({
       ProductName: Title,
       ProductDescription: Desc,
-      ProductPrice: Price,
-      ProductRating: Rating,
+      ProductPrice: parseFloat(Price),
+      ProductRating: parseFloat(Rating),
       ProductSizes: Size,
-      ProductBestSeller: BestSeller,
+      ProductBestSeller: JSON.parse(BestSeller),
+      ProductImage: PImage,
     });
-
     await record.save();
     res.status(200).json({ message: "Successfully Insert Product 😍" });
   } catch (error) {

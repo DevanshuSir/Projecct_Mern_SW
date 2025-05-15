@@ -13,6 +13,7 @@ const AdminProductSchema = new Schema({
   },
   ProductStatus: { type: String, default: "Out-Of-Stock" },
   ProductBestSeller: Boolean,
+  ProductImage: String,
 });
 
 module.exports = model("AdminProduct", AdminProductSchema);

@@ -13,8 +13,9 @@ const AdminProduct = () => {
       })
       .then((result) => {
         setProducts(result);
+        console.log(result);
       });
-  }, [products]);
+  }, []);
 
   function handleDelete(id) {
     fetch(`/api/adminproductdelete/${id}`, {
@@ -89,7 +90,7 @@ const AdminProduct = () => {
                     <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600">
                       <td className="p-4">
                         <img
-                          src="/docs/images/products/apple-watch.png"
+                          src={`/uploads/${item.ProductImage}`}
                           className="w-16 md:w-32 max-w-full max-h-full"
                           alt="Apple Watch"
                         />

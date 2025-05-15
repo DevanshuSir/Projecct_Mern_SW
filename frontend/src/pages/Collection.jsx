@@ -58,7 +58,7 @@ const Collection = () => {
                 <Link to={"/singlecollection"}>
                   <div class="bg-white rounded-xl shadow p-4">
                     <img
-                      src="https://via.placeholder.com/300x200"
+                      src={`/${collection.ProductImage}`}
                       alt="Product"
                       class="w-full h-48 object-cover rounded-md mb-3"
                     />

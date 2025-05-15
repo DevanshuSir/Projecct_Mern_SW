@@ -24,6 +24,7 @@ const AddProductadmin = () => {
   const [productRating, setProductRating] = useState(0);
   const [isSize, setIssize] = useState([]);
   const [isBestseller, setIsbestseller] = useState(false);
+  const [image, setImage] = useState("");
 
   function handleChange(e) {
     let value = e.target.value;
@@ -38,19 +39,20 @@ const AddProductadmin = () => {
 
   function handleForm(e) {
     e.preventDefault();
-    const formData = {
-      Title: productName,
-      Desc: productDesc,
-      Price: productPrice,
-      Rating: productRating,
-      Size: isSize,
-      BestSeller: isBestseller,
-    };
+    const formData = new FormData();
+    formData.append("Title", productName);
+    formData.append("Desc", productDesc);
+    formData.append("Price", productPrice);
+    formData.append("Rating", productRating);
+    isSize.forEach((value) => {
+      formData.append("Size", value);
+    });
+    formData.append("BestSeller", JSON.stringify(isBestseller));
+    formData.append("image", image);
 
     fetch("/api/adminproductdata", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formData),
+      body: formData,
     })
       .then((res) => {
         return res.json();
@@ -71,7 +73,11 @@ const AddProductadmin = () => {
           <h1 className=" text-center text-4xl font-bold text-sky-600 my-4">
             Add Products ✔️
           </h1>
-          <form onSubmit={handleForm}>
+          <form
+            onSubmit={handleForm}
+            method="post"
+            encType="multipart/form-data"
+          >
             <TextField
               fullWidth
               label="ProductName"
@@ -120,6 +126,17 @@ const AddProductadmin = () => {
               value={productRating}
               onChange={(e) => {
                 setProductRating(e.target.value);
+              }}
+            />
+
+            <label htmlFor="">Product Image</label>
+            <input
+              type="file"
+              name="image"
+              id=""
+              className="w-full my-4 "
+              onChange={(e) => {
+                setImage(e.target.files[0]);
               }}
             />
 
