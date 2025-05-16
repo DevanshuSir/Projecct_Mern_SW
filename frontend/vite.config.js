@@ -9,7 +9,9 @@ export default defineConfig({
       "/api": {
         target: "http://localhost:5000",
       },
-      "/uploads": "http://localhost:5000",
+      "/uploads": {
+        target: "http://localhost:5000",
+      },
     },
   },
 });

@@ -19,5 +19,7 @@ api.get("/frotendproducts", userController.FrontendProducts);
 api.post("/querydata", userController.QueryData);
 api.get("/queryadmindata", adminController.QueryAdminData);
 api.delete("/querydelete/:abc", adminController.queryDelete);
+api.get("/userquerydata/:abc", adminController.userQueryData);
+api.post("/usermailreply/:abc", adminController.usermailReply);
 
 module.exports = api;

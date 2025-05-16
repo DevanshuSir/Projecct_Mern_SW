@@ -58,9 +58,9 @@ const Collection = () => {
                 <Link to={"/singlecollection"}>
                   <div class="bg-white rounded-xl shadow p-4">
                     <img
-                      src={`/${collection.ProductImage}`}
+                      src={`/uploads/${product.ProductImage}`}
                       alt="Product"
-                      class="w-full h-48 object-cover rounded-md mb-3"
+                      class="w-full h-auto object-fill rounded-md mb-3"
                     />
                     <h3 class="text-lg font-semibold">{product.ProductName}</h3>
                     <p class="text-gray-600">{product.ProductDescription}</p>

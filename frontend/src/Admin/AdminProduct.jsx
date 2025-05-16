@@ -15,7 +15,7 @@ const AdminProduct = () => {
         setProducts(result);
         console.log(result);
       });
-  }, []);
+  }, [products]);
 
   function handleDelete(id) {
     fetch(`/api/adminproductdelete/${id}`, {
