@@ -6,6 +6,19 @@ const adminproducts = async (req, res) => {
   try {
     const PImage = req.file.filename;
     const { Title, Desc, Price, Rating, Size, BestSeller } = req.body;
+
+    if (
+      !Title ||
+      !Desc ||
+      !Price ||
+      !Rating ||
+      !Size ||
+      !BestSeller ||
+      !PImage
+    ) {
+      res.status(400).json({ message: "All fields are required 🫤" });
+    }
+
     const record = new AdminProductCollection({
       ProductName: Title,
       ProductDescription: Desc,
@@ -24,7 +37,7 @@ const adminproducts = async (req, res) => {
 
 const adminAllProducts = async (req, res) => {
   try {
-    const record = await AdminProductCollection.find();
+    const record = await AdminProductCollection.find().sort({ _id: -1 });
     res.status(200).json(record);
   } catch (error) {
     res.status(500).json({ message: "Internal Server Error 🫤" });

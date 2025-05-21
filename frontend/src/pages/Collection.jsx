@@ -55,7 +55,7 @@ const Collection = () => {
             <div class="md:col-span-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {/* <!-- Product Card --> */}
               {collection.map((product) => (
-                <Link to={"/singlecollection"}>
+                <Link to={`/singlecollection/${product._id}`}>
                   <div class="bg-white rounded-xl shadow p-4">
                     <img
                       src={`/uploads/${product.ProductImage}`}

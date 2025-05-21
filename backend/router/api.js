@@ -21,5 +21,8 @@ api.get("/queryadmindata", adminController.QueryAdminData);
 api.delete("/querydelete/:abc", adminController.queryDelete);
 api.get("/userquerydata/:abc", adminController.userQueryData);
 api.post("/usermailreply/:abc", adminController.usermailReply);
+api.get("/singleuserproduct/:abc", userController.SingleUserProduct);
+api.get("/latestcollection", userController.latestCollection);
+api.get("/bestsellerdata", userController.bestsellerData);
 
 module.exports = api;

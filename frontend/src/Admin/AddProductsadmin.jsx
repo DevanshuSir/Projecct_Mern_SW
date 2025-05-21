@@ -14,6 +14,7 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-hot-toast";
 
 const AddProductadmin = () => {
   const navigate = useNavigate();
@@ -21,7 +22,7 @@ const AddProductadmin = () => {
   const [productName, setProductName] = useState("");
   const [productDesc, setProductDesc] = useState("");
   const [productPrice, setProductPrice] = useState("");
-  const [productRating, setProductRating] = useState(0);
+  const [productRating, setProductRating] = useState();
   const [isSize, setIssize] = useState([]);
   const [isBestseller, setIsbestseller] = useState(false);
   const [image, setImage] = useState("");
@@ -60,6 +61,9 @@ const AddProductadmin = () => {
       .then((result) => {
         if (result.message === "Successfully Insert Product 😍") {
           navigate("/adminproduct");
+          toast.success(result.message);
+        } else {
+          toast.error(result.message);
         }
       });
   }
@@ -80,6 +84,7 @@ const AddProductadmin = () => {
           >
             <TextField
               fullWidth
+              required
               label="ProductName"
               id="fullWidth"
               sx={{ marginBottom: "10px" }}
@@ -90,6 +95,7 @@ const AddProductadmin = () => {
             />
             <TextField
               fullWidth
+              required
               label="ProductDescription"
               id="fullWidth"
               multiline

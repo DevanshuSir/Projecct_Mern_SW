@@ -5,7 +5,7 @@ import Support from "../assets/Support.png";
 const Policy = () => {
   return (
     <div>
-      <div className="flex flex-col sm:flex-row justify-around gap-12 sm:gap-2 text-center py-2">
+      <div className="flex flex-col sm:flex-row justify-around gap-12 sm:gap-2 text-center py-20">
         <div>
           <img src={Exchange} alt="" className="w-12 m-auto mb-5" />
           <p className="font-semibold">Easy Exchange Policy</p>

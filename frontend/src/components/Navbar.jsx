@@ -14,12 +14,19 @@ import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import { Link, NavLink } from "react-router-dom";
 import Logo from "../assets/logo_ecommerce.png";
+import Badge from "@mui/material/Badge";
+
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import { useSelector } from "react-redux";
 
 const pages = [
   { title: "Home", url: "/home" },
   { title: "Collections", url: "/collection" },
 ];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+const settings = [
+  { title: "Profile", url: "/profile" },
+  { title: "LogOut", url: "/logout" },
+];
 
 function Navbar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -39,6 +46,8 @@ function Navbar() {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
+  const cartItems = useSelector((state) => state.Cart.cart);
 
   return (
     <AppBar position="static" sx={{ backgroundColor: "black" }}>
@@ -134,6 +143,16 @@ function Navbar() {
             ))}
           </Box>
 
+          <Link to={"/cart"}>
+            <Badge
+              color="secondary"
+              badgeContent={cartItems.length === 0 ? "0" : cartItems.length}
+              sx={{ marginRight: "20px" }}
+            >
+              <ShoppingCartIcon />
+            </Badge>
+          </Link>
+
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
@@ -157,8 +176,10 @@ function Navbar() {
               onClose={handleCloseUserMenu}
             >
               {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
+                <MenuItem key={setting.title} onClick={handleCloseUserMenu}>
+                  <Link to={`${setting.url}`}>
+                    <Typography textAlign="center">{setting.title}</Typography>
+                  </Link>
                 </MenuItem>
               ))}
             </Menu>
