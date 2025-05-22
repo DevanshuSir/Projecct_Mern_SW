@@ -13,6 +13,7 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { NavLink, useNavigate } from "react-router-dom";
+import { toast } from "react-hot-toast";
 
 // TODO remove, this demo shouldn't need to reset the theme.
 
@@ -38,12 +39,21 @@ export default function SignIn() {
         return res.json();
       })
       .then((result) => {
-        console.log(result);
-
-        if (result.data && result.data.EmailAddress === "admin123@gmail.com") {
-          navigate("/admin");
+        if (result.message === "Successfully Login 🥰") {
+          if (
+            result.data &&
+            result.data.EmailAddress === "admin123@gmail.com"
+          ) {
+            localStorage.setItem("token", result.Tokens);
+            navigate("/admin");
+            toast.success(result.message);
+          } else {
+            localStorage.setItem("token", result.Tokens);
+            navigate("/home");
+            toast.success(result.message);
+          }
         } else {
-          navigate("/home");
+          toast.error(result.message);
         }
       });
   };

@@ -1,6 +1,8 @@
 const RegCollection = require("../models/RegData");
 const AdminProductCollections = require("../models/AdminProduct");
 const QueryCollections = require("../models/Query");
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 
 const homePage = (req, res) => {
   res.send("Hello Project Class");
@@ -14,15 +16,21 @@ const RegData = async (req, res) => {
       res.status(400).json({ message: "All fields are required 🫤" });
     }
 
+    const hashPassword = await bcrypt.hash(password, 10);
+
     const record = new RegCollection({
       FirstName: firstName,
       LastName: lastName,
       EmailAddress: email,
-      Password: password,
+      Password: hashPassword,
+    });
+
+    const token = jwt.sign({ id: record._id }, process.env.JWT_SECRET, {
+      expiresIn: "5d",
     });
 
     await record.save();
-    res.status(200).json({ message: "Successfully Signup 😍" });
+    res.status(200).json({ Tokens: token, message: "Successfully Signup 😍" });
   } catch (error) {
     res.status(500).json({ message: "Internal Server Error 🫤" });
   }
@@ -34,19 +42,24 @@ const LoginData = async (req, res) => {
 
     let userCheck = await RegCollection.findOne({ EmailAddress: email });
 
-    // console.log(userCheck);
-
-    if (userCheck != null) {
-      if (userCheck.Password == pass) {
-        res
-          .status(200)
-          .json({ data: userCheck, message: "Successfully Login 🥰" });
-      } else {
-        res.status(404).json({ message: "Email and password did not match" });
-      }
-    } else {
-      res.status(404).json({ message: "Email and password did not match" });
+    if (!userCheck) {
+      res.status(400).json({ message: "User not found !" });
     }
+
+    const matchPass = await bcrypt.compare(pass, userCheck.Password);
+
+    if (!matchPass) {
+      res.status(400).json({ message: "Invalid credentials 🫤 " });
+    }
+
+    const token = jwt.sign({ id: userCheck._id }, process.env.JWT_SECRET, {
+      expiresIn: "5d",
+    });
+    res.status(200).json({
+      data: userCheck,
+      Tokens: token,
+      message: "Successfully Login 🥰",
+    });
   } catch (error) {
     res.status(500).json({ message: "Internal Server Error 🫤" });
   }
