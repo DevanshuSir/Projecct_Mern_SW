@@ -1,6 +1,14 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
+  const navigate = useNavigate();
+
+  function handleLogout() {
+    localStorage.removeItem("token");
+    navigate("/");
+  }
+
   return (
     <div>
       <div>
@@ -40,6 +48,13 @@ const Profile = () => {
             </button>
           </div>
         </div>
+
+        <button
+          className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+          onClick={handleLogout}
+        >
+          Log-Out
+        </button>
       </div>
     </div>
   );

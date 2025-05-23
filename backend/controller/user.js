@@ -25,12 +25,8 @@ const RegData = async (req, res) => {
       Password: hashPassword,
     });
 
-    const token = jwt.sign({ id: record._id }, process.env.JWT_SECRET, {
-      expiresIn: "5d",
-    });
-
     await record.save();
-    res.status(200).json({ Tokens: token, message: "Successfully Signup 😍" });
+    res.status(200).json({ message: "Successfully Signup 😍" });
   } catch (error) {
     res.status(500).json({ message: "Internal Server Error 🫤" });
   }
@@ -43,13 +39,13 @@ const LoginData = async (req, res) => {
     let userCheck = await RegCollection.findOne({ EmailAddress: email });
 
     if (!userCheck) {
-      res.status(400).json({ message: "User not found !" });
+      return res.status(400).json({ message: "User not found !" });
     }
 
     const matchPass = await bcrypt.compare(pass, userCheck.Password);
 
     if (!matchPass) {
-      res.status(400).json({ message: "Invalid credentials 🫤 " });
+      return res.status(400).json({ message: "Invalid credentials 🫤 " });
     }
 
     const token = jwt.sign({ id: userCheck._id }, process.env.JWT_SECRET, {
@@ -70,7 +66,7 @@ const FrontendProducts = async (req, res) => {
     const record = await AdminProductCollections.find({
       ProductStatus: "In-Stock",
     });
-    res.status(200).json(record);
+    res.status(200).json({ data: record, message: "Successfully Send" });
   } catch (error) {
     res.status(500).json({ message: "Internal Server Error 🫤" });
   }

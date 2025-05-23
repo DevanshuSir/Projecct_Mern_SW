@@ -2,6 +2,7 @@ const api = require("express").Router();
 const userController = require("../controller/user");
 const adminController = require("../controller/admin");
 const upload = require("../middleware/multerMiddleware");
+const auth = require("../middleware/auth");
 
 api.get("/", userController.homePage);
 api.post("/regdata", userController.RegData);
@@ -15,7 +16,7 @@ api.get("/adminallproducts", adminController.adminAllProducts);
 api.delete("/adminproductdelete/:abc", adminController.adminProductDelete);
 api.get("/adminsingleproductupdate/:abc", adminController.adminSingleProduct);
 api.put("/adminnewproductupdate/:abc", adminController.adminNewProductUpdate);
-api.get("/frotendproducts", userController.FrontendProducts);
+api.get("/frotendproducts", auth, userController.FrontendProducts);
 api.post("/querydata", userController.QueryData);
 api.get("/queryadmindata", adminController.QueryAdminData);
 api.delete("/querydelete/:abc", adminController.queryDelete);

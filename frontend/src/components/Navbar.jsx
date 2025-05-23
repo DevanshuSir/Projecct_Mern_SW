@@ -47,7 +47,15 @@ function Navbar() {
     setAnchorElUser(null);
   };
 
+  const [token, setToken] = React.useState(null);
+
   const cartItems = useSelector((state) => state.Cart.cart);
+
+  React.useEffect(() => {
+    const tokens = localStorage.getItem("token");
+    setToken(tokens);
+    console.log("text");
+  }, []);
 
   return (
     <AppBar position="static" sx={{ backgroundColor: "black" }}>
@@ -128,20 +136,24 @@ function Navbar() {
           >
             <img src={Logo} alt="" width={"80px"} />
           </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {pages.map((page) => (
-              <NavLink to={`${page.url}`}>
-                <Button
-                  key={page.title}
-                  onClick={handleCloseNavMenu}
-                  sx={{ my: 2, color: "white", display: "block" }}
-                >
-                  {page.title}
-                  <hr className="border-none h-[1.5px] bg-black hidden" />
-                </Button>
-              </NavLink>
-            ))}
-          </Box>
+          {token ? (
+            <Box></Box>
+          ) : (
+            <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
+              {pages.map((page) => (
+                <NavLink to={`${page.url}`}>
+                  <Button
+                    key={page.title}
+                    onClick={handleCloseNavMenu}
+                    sx={{ my: 2, color: "white", display: "block" }}
+                  >
+                    {page.title}
+                    <hr className="border-none h-[1.5px] bg-black hidden" />
+                  </Button>
+                </NavLink>
+              ))}
+            </Box>
+          )}
 
           <Link to={"/cart"}>
             <Badge

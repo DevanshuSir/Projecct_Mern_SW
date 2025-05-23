@@ -1,16 +1,37 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import toast from "react-hot-toast";
+import { Link, useNavigate } from "react-router-dom";
 
 const Collection = () => {
   const [collection, setCollection] = useState([]);
 
+  const navigate = useNavigate();
+
   useEffect(() => {
-    fetch("/api/frotendproducts")
+    let token = localStorage.getItem("token");
+    // console.log(token);
+
+    fetch("/api/frotendproducts", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token ?? "undefined"}`,
+      },
+    })
       .then((res) => {
         return res.json();
       })
       .then((result) => {
-        setCollection(result);
+        console.log(result);
+        setCollection(result.data);
+
+        if (result.message === "Successfully Send") {
+          navigate("/collection");
+        } else if (result.message === "No token provided") {
+          navigate("/");
+        } else if (result.message === "Invalid token or expired token") {
+          toast.error(result.message);
+        }
       });
   }, []);
 
