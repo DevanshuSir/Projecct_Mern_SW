@@ -19,8 +19,6 @@ const SingleCollection = () => {
       });
   }, [id]);
 
-  console.log(singleData);
-
   return (
     <div>
       <div className="min-h-screen bg-gray-100 p-6">
@@ -55,9 +53,11 @@ const SingleCollection = () => {
                   singleData.ProductSizes.map((value) => (
                     <label className="border px-4 py-1 rounded hover:bg-gray-200 cursor-pointer inline-block">
                       <input
-                        type="checkbox"
-                        className="hidden"
-                        onChange={(e) => console.log(e.target.checked)} // Optional handler
+                        type="radio"
+                        name="size"
+                        className="m-3"
+                        value={value}
+                        onChange={(e) => console.log(e.target.value)} // Optional handler
                       />
                       {value}
                     </label>

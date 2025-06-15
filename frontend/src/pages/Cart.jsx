@@ -2,10 +2,67 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { cartTotal, deleteCartValue } from "../features/cartslice/CartSlice";
 import { Link } from "react-router-dom";
+import { toast } from "react-hot-toast";
 
 const Cart = () => {
   const cartValue = useSelector((state) => state.Cart.cart);
   const TotalValue = useSelector((state) => state.Cart);
+
+  function handlePayment() {
+    const amount = TotalValue.Price;
+    const currency = "INR";
+    const receipt = "receipt#1";
+
+    fetch(`/api/create-order`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        amount: amount,
+        currency: currency,
+        receipt: receipt,
+      }),
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((order) => {
+        const options = {
+          key: "rzp_test_5Je13nR9dWaC7o",
+          amount: order.amount,
+          currency: order.currency,
+          name: "E_commerce_Shopping",
+          description: "Tseting Mode Payment",
+          order_id: order.id,
+          handler: function (response) {
+            fetch("/api/verify", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(response),
+            })
+              .then((res) => {
+                return res.json();
+              })
+              .then((result) => {
+                if (result.success) {
+                  toast.success("Payment Successfully 😍");
+                } else {
+                  toast.error("Payment Failed 😐");
+                }
+              });
+          },
+          prefill: {
+            name: "Devanshu",
+            email: "devanshu@gmail.com",
+            contact: "123456789",
+          },
+          theme: {
+            color: "skyblue",
+          },
+        };
+        const razor1 = new window.Razorpay(options);
+        razor1.open();
+      });
+  }
 
   const dispatch = useDispatch();
 
@@ -78,7 +135,10 @@ const Cart = () => {
               <h2 className="text-xl font-bold">
                 Total Price : ₹{TotalValue.Price}
               </h2>
-              <button className="mt-4 px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition duration-300">
+              <button
+                onClick={handlePayment}
+                className="mt-4 px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition duration-300"
+              >
                 Proceed to Checkout
               </button>
             </div>

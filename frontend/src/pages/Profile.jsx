@@ -12,7 +12,7 @@ const Profile = () => {
   return (
     <div>
       <div>
-        <div className="max-w-sm mx-auto mt-15 mb-15 bg-gray-300 rounded-xl shadow-lg p-6 text-center space-y-4">
+        <div className="max-w-sm mx-auto mt-15 mb-15 bg-gray-300 rounded-xl shadow-lg p-6 text-center space-y-4 my-10">
           <div className="space-y-3">
             <img
               src={""}
@@ -48,9 +48,10 @@ const Profile = () => {
             </button>
           </div>
         </div>
-
+      </div>
+      <div className="flex justify-center items-center my-10">
         <button
-          className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+          className="bg-green-600 text-white px-4 py-2 rounded hover:bg-red-700 flex items-center"
           onClick={handleLogout}
         >
           Log-Out

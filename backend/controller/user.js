@@ -3,9 +3,51 @@ const AdminProductCollections = require("../models/AdminProduct");
 const QueryCollections = require("../models/Query");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+const Razorpay = require("razorpay");
+const crypto = require("crypto");
+
+const razorpay = new Razorpay({
+  key_id: process.env.RAZORPAY_KEY_ID,
+  key_secret: process.env.RAZORPAY_KEY_SECRET,
+});
 
 const homePage = (req, res) => {
-  res.send("Hello Project Class");
+  try {
+    res.status(200).json({ message: "Successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Internal Server Error 🫤" });
+  }
+};
+
+const OrderController = async (req, res) => {
+  const { amount, currency, receipt } = req.body;
+  const options = {
+    amount: amount * 100,
+    currency,
+    receipt,
+  };
+
+  try {
+    const order = await razorpay.orders.create(options);
+    res.json(order);
+  } catch (err) {
+    res.status(500).send(err);
+  }
+};
+
+const VerifyController = (req, res) => {
+  const { razorpay_order_id, razorpay_payment_id, razorpay_signature } =
+    req.body;
+
+  const hmac = crypto.createHmac("sha256", process.env.RAZORPAY_KEY_SECRET);
+  hmac.update(razorpay_order_id + "|" + razorpay_payment_id);
+  const generated_signature = hmac.digest("hex");
+
+  if (generated_signature === razorpay_signature) {
+    res.json({ success: true, message: "Payment verified successfully" });
+  } else {
+    res.json({ success: false, message: "Payment verification failed" });
+  }
 };
 
 const RegData = async (req, res) => {
@@ -49,7 +91,7 @@ const LoginData = async (req, res) => {
     }
 
     const token = jwt.sign({ id: userCheck._id }, process.env.JWT_SECRET, {
-      expiresIn: "5d",
+      expiresIn: "1h",
     });
     res.status(200).json({
       data: userCheck,
@@ -130,4 +172,6 @@ module.exports = {
   SingleUserProduct,
   latestCollection,
   bestsellerData,
+  OrderController,
+  VerifyController,
 };

@@ -4,7 +4,7 @@ const adminController = require("../controller/admin");
 const upload = require("../middleware/multerMiddleware");
 const auth = require("../middleware/auth");
 
-api.get("/", userController.homePage);
+api.get("/homepage", auth, userController.homePage);
 api.post("/regdata", userController.RegData);
 api.post("/sigindata", userController.LoginData);
 api.post(
@@ -25,5 +25,7 @@ api.post("/usermailreply/:abc", adminController.usermailReply);
 api.get("/singleuserproduct/:abc", userController.SingleUserProduct);
 api.get("/latestcollection", userController.latestCollection);
 api.get("/bestsellerdata", userController.bestsellerData);
+api.post("/create-order", userController.OrderController);
+api.post("/verify", userController.VerifyController);
 
 module.exports = api;

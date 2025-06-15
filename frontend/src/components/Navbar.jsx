@@ -12,7 +12,7 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import Logo from "../assets/logo_ecommerce.png";
 import Badge from "@mui/material/Badge";
 
@@ -23,12 +23,11 @@ const pages = [
   { title: "Home", url: "/home" },
   { title: "Collections", url: "/collection" },
 ];
-const settings = [
-  { title: "Profile", url: "/profile" },
-  { title: "LogOut", url: "/logout" },
-];
+const settings = [{ title: "Profile", url: "/profile" }];
 
 function Navbar() {
+  const navigate = useNavigate();
+
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -54,8 +53,7 @@ function Navbar() {
   React.useEffect(() => {
     const tokens = localStorage.getItem("token");
     setToken(tokens);
-    console.log("text");
-  }, []);
+  }, [navigate]);
 
   return (
     <AppBar position="static" sx={{ backgroundColor: "black" }}>
@@ -136,66 +134,68 @@ function Navbar() {
           >
             <img src={Logo} alt="" width={"80px"} />
           </Typography>
-          {token ? (
-            <Box></Box>
-          ) : (
+          {token && (
             <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
               {pages.map((page) => (
-                <NavLink to={`${page.url}`}>
+                <NavLink to={page.url} key={page.title}>
                   <Button
-                    key={page.title}
                     onClick={handleCloseNavMenu}
                     sx={{ my: 2, color: "white", display: "block" }}
                   >
                     {page.title}
-                    <hr className="border-none h-[1.5px] bg-black hidden" />
                   </Button>
                 </NavLink>
               ))}
             </Box>
           )}
 
-          <Link to={"/cart"}>
-            <Badge
-              color="secondary"
-              badgeContent={cartItems.length === 0 ? "0" : cartItems.length}
-              sx={{ marginRight: "20px" }}
-            >
-              <ShoppingCartIcon />
-            </Badge>
-          </Link>
+          {token && (
+            <Link to={"/cart"}>
+              <Badge
+                color="secondary"
+                badgeContent={cartItems.length === 0 ? "0" : cartItems.length}
+                sx={{ marginRight: "20px" }}
+              >
+                <ShoppingCartIcon />
+              </Badge>
+            </Link>
+          )}
 
-          <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: "45px" }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              {settings.map((setting) => (
-                <MenuItem key={setting.title} onClick={handleCloseUserMenu}>
-                  <Link to={`${setting.url}`}>
-                    <Typography textAlign="center">{setting.title}</Typography>
-                  </Link>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box>
+          {token && (
+            <Box sx={{ flexGrow: 0 }}>
+              <Tooltip title="Open settings">
+                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                  <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                </IconButton>
+              </Tooltip>
+              <Menu
+                sx={{ mt: "45px" }}
+                id="menu-appbar"
+                anchorEl={anchorElUser}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                open={Boolean(anchorElUser)}
+                onClose={handleCloseUserMenu}
+              >
+                {settings.map((setting) => (
+                  <MenuItem key={setting.title} onClick={handleCloseUserMenu}>
+                    <Link to={`${setting.url}`}>
+                      <Typography textAlign="center">
+                        {setting.title}
+                      </Typography>
+                    </Link>
+                  </MenuItem>
+                ))}
+              </Menu>
+            </Box>
+          )}
         </Toolbar>
       </Container>
     </AppBar>
